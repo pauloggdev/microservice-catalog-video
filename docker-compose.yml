@@ -1,0 +1,13 @@
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: php
+    restart: always
+    volumes:
+      - ./:/var/www
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf # Sobrescrever a configuração do VirtualHost
+    ports:
+      - "8000:80"
+    working_dir: /var/www
