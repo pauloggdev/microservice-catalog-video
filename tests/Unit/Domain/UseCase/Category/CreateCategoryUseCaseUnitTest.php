@@ -26,6 +26,18 @@ class CreateCategoryUseCaseUnitTest extends TestCase
         $categoryRepositoryMock->shouldReceive('insert')->andReturn($categoryEntityMock);
         $createCategoryUseCase = new CreateCategoryUseCase($categoryRepositoryMock);
         $output                = $createCategoryUseCase->execute($categoryCreateInputDtoMock);
+
+
+        /**
+         * Spy the createCategoryUseCase
+         */
+
+        $spy     = Mockery::mock(CategoryRepositoryInterface::class);
+        $spy->shouldReceive('insert')->andReturn($categoryEntityMock);
+        $createCategoryUseCase = new CreateCategoryUseCase($spy);
+        $output                = $createCategoryUseCase->execute($categoryCreateInputDtoMock);
+        $spy->shouldHaveReceived('insert');
+
         $this->assertEquals($categoryId, $output->id);
         $this->assertEquals($categoryName, $output->name);
         $this->assertEquals($categoryDescription, $output->description);
